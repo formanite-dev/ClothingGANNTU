@@ -1,103 +1,35 @@
-# GANSpace: Discovering Interpretable GAN Controls
-![Python 3.7](https://img.shields.io/badge/python-3.7-green.svg)
-![PyTorch 1.3](https://img.shields.io/badge/pytorch-1.3-green.svg)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harskish/ganspace/blob/master/notebooks/Ganspace_colab.ipynb)
-![teaser](teaser.jpg)
-<p align="justify"><b>Figure 1:</b> Sequences of image edits performed using control discovered with our method, applied to three different GANs. The white insets specify the particular edits using notation explained in Section 3.4 ('Layer-wise Edits').</p>
+# ClothingGAN: AI Powered Clothing Design Generator
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mfrashad/ClothingGAN/blob/master/ClothingGAN_Demo.ipynb)
 
 
-> **GANSpace: Discovering Interpretable GAN Controls**<br>
-> Erik Härkönen<sup>1,2</sup>, Aaron Hertzmann<sup>2</sup>, Jaakko Lehtinen<sup>1,3</sup>, Sylvain Paris<sup>2</sup><br>
-> <sup>1</sup>Aalto University, <sup>2</sup>Adobe Research, <sup>3</sup>NVIDIA<br>
-> https://arxiv.org/abs/2004.02546
->
-> <p align="justify"><b>Abstract:</b> <i>This paper describes a simple technique to analyze Generative Adversarial Networks (GANs) and create interpretable controls for image synthesis, such as change of viewpoint, aging, lighting, and time of day. We identify important latent directions based on Principal Components Analysis (PCA) applied in activation space. Then, we show that interpretable edits can be defined based on layer-wise application of these edit directions. Moreover, we show that BigGAN can be controlled with layer-wise inputs in a StyleGAN-like manner. A user may identify a large number of interpretable controls with these mechanisms. We demonstrate results on GANs from various datasets.</i></p>
-> <p align="justify"><b>Video:</b> 
-> https://youtu.be/jdTICDa_eAI
+![teaser](clothing-gan-thumbnail.gif)
 
-## Setup
-See the [setup instructions](SETUP.md).
+[Devpost Link](https://devpost.com/software/clothinggan) | [Youtube Video](https://www.youtube.com/watch?v=dHuunRnMnMo)
 
-## Usage
-This repository includes versions of BigGAN, StyleGAN, and StyleGAN2 modified to support per-layer latent vectors.
+## Inspiration
+GAN or Generative Adversarial Network is a generative model that able to generate images by learning the probability distribution of a large image dataset. I always find GANs fascinating as it enables me to generate high-quality arts or design even without the technical or artistic skill in drawing. Recently, I've seen many face editing demonstrations on GAN, but never seen semantic manipulation in other datasets. Hence,  I created ClothingGAN an application where you can collaboratively design clothes without high technical expertise.
 
-**Interactive model exploration**
-```
-# Explore BigGAN-deep husky
-python interactive.py --model=BigGAN-512 --class=husky --layer=generator.gen_z -n=1_000_000
+## What it does
+ClothingGAN able to generate clothing images and mix these images. While mixing, you can control which structure or style that you want the clothing to copy. Additionally, you can edit the generated clothing with several given attributes such as dark color, jacket, dress, or coat.
 
-# Explore StyleGAN2 ffhq in W space
-python interactive.py --model=StyleGAN2 --class=ffhq --layer=style --use_w -n=1_000_000 -b=10_000
+## How I built it
+I trained StyleGAN2-ADA on a subset of the Lookbook dataset. The total images I trained it on are 8,726 clothing images with a clean background. I transfer learned from FFHQ model and trained the model for a day.
 
-# Explore StyleGAN2 cars in Z space
-python interactive.py --model=StyleGAN2 --class=car --layer=style -n=1_000_000 -b=10_000
-```
-```
-# Apply previously saved edits interactively
-python interactive.py --model=StyleGAN2 --class=ffhq --layer=style --use_w --inputs=out/directions
-```
+After finished training the GAN, I proceeded to use GANSpace method to find important directions in the latent space. Then, I tried to guess what these directions represent and labeled them accordingly. The reason I use GANSpace is that it is unsupervised and does not need an attribute classifier.
 
-**Visualize principal components**
-```
-# Visualize StyleGAN2 ffhq W principal components
-python visualize.py --model=StyleGAN2 --class=ffhq --use_w --layer=style -b=10_000
+Finally, I created a UI with Gradio UI library. All the development is done on Colab. Gradio made deployment very easy. I can directly deploy the UI from Colab where Gradio will create a proxy from the Colab server to their domain and the given URL, hence allowing the general public to use the UI or demo. However, since I cannot keep the Colab server on continuously due to GPU usage, ping me if you want to try out the demo.
 
-# Create videos of StyleGAN wikiart components (saved to ./out)
-python visualize.py --model=StyleGAN --class=wikiart --use_w --layer=g_mapping -b=10_000 --batch --video
-```
 
-**Options**
-```
-Command line paramaters:
-  --model      one of [ProGAN, BigGAN-512, BigGAN-256, BigGAN-128, StyleGAN, StyleGAN2]
-  --class      class name; leave empty to list options
-  --layer      layer at which to perform PCA; leave empty to list options
-  --use_w      treat W as the main latent space (StyleGAN / StyleGAN2)
-  --inputs     load previously exported edits from directory
-  --sigma      number of stdevs to use in visualize.py
-  -n           number of PCA samples
-  -b           override automatic minibatch size detection
-  -c           number of components to keep
-```
 
-## Reproducibility
-All figures presented in the main paper can be recreated using the included Jupyter notebooks:
-* Figure 1: `figure_teaser.ipynb`
-* Figure 2: `figure_pca_illustration.ipynb`
-* Figure 3: `figure_pca_cleanup.ipynb`
-* Figure 4: `figure_style_content_sep.ipynb`
-* Figure 5: `figure_supervised_comp.ipynb`
-* Figure 6: `figure_biggan_style_resampling.ipynb`
-* Figure 7: `figure_edit_zoo.ipynb`
+## Challenges I ran into
+One of the challenges I faced was fixing a memory leak issue. Part of the code keeps crashing, and I initially thought I cannot fit the model to the GPU memory, however, after hours of debugging, I finally found the code that has the memory leak.
 
-## Known issues
-* The interactive viewer sometimes freezes on startup on Ubuntu 18.04. The freeze is resolved by clicking on the terminal window and pressing the control key. Any insight into the issue would be greatly appreciated!
+## What I learned
+I am already quite familiar with GAN but I have always been intimidated on deploying ML models. Luckily, I discovered Gradio UI, a library that makes ML deployment very easy. There were also other alternatives such as StreamLit or Dash, but found Gradio as the easiest to work with. One shortcoming is that it's quite inflexible in terms of customization.
 
-## Integrating a new model
-1. Create a wrapper for the model in `models/wrappers.py` using the `BaseModel` interface.
-2. Add the model to `get_model()` in `models/wrappers.py`.
+## What's next for ClothingGAN
+There is a lot of potential for the project. Some features that can be added are appearance transfer, image inversion (uploading & editing real image), generating the fashion model itself, conditional text input with OpenAI CLIP model, etc.
 
-## Importing StyleGAN checkpoints from TensorFlow
-It is possible to import trained StyleGAN and StyleGAN2 weights from TensorFlow into GANSpace.
-
-### StyleGAN
-1. Install TensorFlow: `conda install tensorflow-gpu=1.*`.
-2. Modify methods `__init__()`, `load_model()` in `models/wrappers.py` under class StyleGAN.
-
-### StyleGAN2
-1. Follow the instructions in [models/stylegan2/stylegan2-pytorch/README.md](https://github.com/harskish/stylegan2-pytorch/blob/master/README.md#convert-weight-from-official-checkpoints). Make sure to use the fork in this specific folder when converting the weights for compatibility reasons.
-2. Save the converted checkpoint as `checkpoints/stylegan2/<dataset>_<resolution>.pt`.
-3. Modify methods `__init__()`, `download_checkpoint()` in `models/wrappers.py` under class StyleGAN2.
-
-## Acknowledgements
-We would like to thank:
-
-* The authors of the PyTorch implementations of [BigGAN][biggan_pytorch], [StyleGAN][stylegan_pytorch], and [StyleGAN2][stylegan2_pytorch]:<br>Thomas Wolf, Piotr Bialecki, Thomas Viehmann, and Kim Seonghyeon.
-* Joel Simon from ArtBreeder for providing us with the landscape model for StyleGAN.<br>(unfortunately we cannot distribute this model)
-* David Bau and colleagues for the excellent [GAN Dissection][gandissect] project.
-* Justin Pinkney for the [Awesome Pretrained StyleGAN][pretrained_stylegan] collection.
-* Tuomas Kynkäänniemi for giving us a helping hand with the experiments.
-* The Aalto Science-IT project for providing computational resources for this project.
 
 ## Citation
 ```
@@ -108,16 +40,3 @@ We would like to thank:
   year      = {2020}
 }
 ```
-
-## License
-
-The code of this repository is released under the [Apache 2.0](LICENSE) license.<br>
-The directory `netdissect` is a derivative of the [GAN Dissection][gandissect] project, and is provided under the MIT license.<br>
-The directories `models/biggan` and `models/stylegan2` are provided under the MIT license.
-
-
-[biggan_pytorch]: https://github.com/huggingface/pytorch-pretrained-BigGAN
-[stylegan_pytorch]: https://github.com/lernapparat/lernapparat/blob/master/style_gan/pytorch_style_gan.ipynb
-[stylegan2_pytorch]: https://github.com/rosinality/stylegan2-pytorch
-[gandissect]: https://github.com/CSAILVision/GANDissect
-[pretrained_stylegan]: https://github.com/justinpinkney/awesome-pretrained-stylegan
