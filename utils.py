@@ -15,6 +15,7 @@ import requests
 import pickle
 import sys
 import re
+import gdown
 
 def prettify_name(name):
     valid = "-_%s%s" % (string.ascii_letters, string.digits)
@@ -43,23 +44,24 @@ def pad_frames(strip, pad_fract_horiz=64, pad_fract_vert=0, pad_value=None):
 
 def download_google_drive(url, output_name):
     print('Downloading', url)
-    session = requests.Session()
-    r = session.get(url, allow_redirects=True)
-    r.raise_for_status()
+    gdown.download(url, str(output_name))
+    # session = requests.Session()
+    # r = session.get(url, allow_redirects=True)
+    # r.raise_for_status()
 
-    # Google Drive virus check message
-    if r.encoding is not None:
-        tokens = re.search('(confirm=.+)&amp;id', str(r.content))
-        assert tokens is not None, 'Could not extract token from response'
+    # # Google Drive virus check message
+    # if r.encoding is not None:
+    #     tokens = re.search('(confirm=.+)&amp;id', str(r.content))
+    #     assert tokens is not None, 'Could not extract token from response'
 
-        url = url.replace('id=', f'{tokens[1]}&id=')
-        r = session.get(url, allow_redirects=True)
-        r.raise_for_status()
+    #     url = url.replace('id=', f'{tokens[1]}&id=')
+    #     r = session.get(url, allow_redirects=True)
+    #     r.raise_for_status()
 
-    assert r.encoding is None, f'Failed to download weight file from {url}'
+    # assert r.encoding is None, f'Failed to download weight file from {url}'
 
-    with open(output_name, 'wb') as f:
-        f.write(r.content)
+    # with open(output_name, 'wb') as f:
+    #     f.write(r.content)
 
 def download_generic(url, output_name):
     print('Downloading', url)
