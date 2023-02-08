@@ -138,16 +138,15 @@ class StyleGAN2(BaseModel):
     # URLs created with https://sites.google.com/site/gdocs2direct/
     def download_checkpoint(self, outfile):
         checkpoints = {
-            'horse': 'https://drive.google.com/uc?export=download&id=18SkqWAkgt0fIwDEf2pqeaenNi4OoCo-0',
-            'ffhq': 'https://drive.google.com/uc?export=download&id=1FJRwzAkV-XWbxgTwxEmEACvuqF5DsBiV',
-            'church': 'https://drive.google.com/uc?export=download&id=1HFM694112b_im01JT7wop0faftw9ty5g',
-            'car': 'https://drive.google.com/uc?export=download&id=1iRoWclWVbDBAy5iXYZrQnKYSbZUqXI6y',
-            'cat': 'https://drive.google.com/uc?export=download&id=15vJP8GDr0FlRYpE8gD7CdeEz2mXrQMgN',
-            'places': 'https://drive.google.com/uc?export=download&id=1X8-wIH3aYKjgDZt4KMOtQzN1m4AlCVhm',
-            'bedrooms': 'https://drive.google.com/uc?export=download&id=1nZTW7mjazs-qPhkmbsOLLA_6qws-eNQu',
-            'kitchen': 'https://drive.google.com/uc?export=download&id=15dCpnZ1YLAnETAPB0FGmXwdBclbwMEkZ',
-            'lookbook1': 'https://drive.google.com/uc?export=download&id=1-F-RMkbHUv_S_k-_olh43mu5rDUMGYKe'
-            'lookbook': 'https://drive.google.com/uc?export=download&id=17g1Gi9VRjfegwF_o-K3UUp__SMGiwFYf'
+            'horse': 'https://drive.google.com/uc?export=download&id=1sjZbr_bqQr3TjTQOl43Cv7vtC9uPVvT8',
+            'ffhq': 'https://drive.google.com/uc?export=download&id=1MY3-NerVGbtJ4zPgjlOdcuWHVdY_t_eb',
+            'church': 'https://drive.google.com/uc?export=download&id=1wqajmEqr2PF2Z5PRRsXpLYd5XJUmc-96',
+            'car': 'https://drive.google.com/uc?export=download&id=16EhMnDOQtUSARUByAQgPfAYulZdHcYt5',
+            'cat': 'https://drive.google.com/uc?export=download&id=1qaEIzSFpRsLBVwiFp7mnQ4ScEB4LsnWz',
+            'places': 'https://drive.google.com/uc?export=download&id=1Tm6_-GGf-EQ6npJSPaW2RUGy513W5lan',
+            'bedrooms': 'https://drive.google.com/uc?export=download&id=1XpWUealEhUztugr_xq5JWJ6OU1AuC29b',
+            'kitchen': 'https://drive.google.com/uc?export=download&id=1RBV0SqYNQ-QnQc9xjCR6WvAf3Z9c7gLg',
+            'lookbook': 'https://drive.google.com/uc?export=download&id=1XpWUealEhUztugr_xq5JWJ6OU1AuC29b'
         }
 
         url = checkpoints[self.outclass]
