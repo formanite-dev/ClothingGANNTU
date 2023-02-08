@@ -142,7 +142,7 @@ class StyleGAN2(BaseModel):
             'ffhq': 'https://drive.google.com/uc?export=download&id=1MY3-NerVGbtJ4zPgjlOdcuWHVdY_t_eb',
             'church': 'https://drive.google.com/uc?export=download&id=1wqajmEqr2PF2Z5PRRsXpLYd5XJUmc-96',
             'car': 'https://drive.google.com/uc?export=download&id=16EhMnDOQtUSARUByAQgPfAYulZdHcYt5',
-            'cat': 'https://drive.google.com/uc?export=download&id=1qaEIzSFpRsLBVwiFp7mnQ4ScEB4LsnWz',
+            'cat': 'https://drive.google.com/file/d/1qaEIzSFpRsLBVwiFp7mnQ4ScEB4LsnWz/view?usp=sharing',
             'places': 'https://drive.google.com/uc?export=download&id=1Tm6_-GGf-EQ6npJSPaW2RUGy513W5lan',
             'bedrooms': 'https://drive.google.com/uc?export=download&id=1XpWUealEhUztugr_xq5JWJ6OU1AuC29b',
             'kitchen': 'https://drive.google.com/uc?export=download&id=1RBV0SqYNQ-QnQc9xjCR6WvAf3Z9c7gLg',
